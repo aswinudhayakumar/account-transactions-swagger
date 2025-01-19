@@ -1,11 +1,11 @@
 ---
 swagger: "2.0"
 info:
-  description: "This is a swagger API documentation for the application account-transactions. 
-  You can find all the available endpoints and its usages here."
-  version: "1.0.5"
-  title: "API-spec for account-transactions"
-basePath: "/v2"
+  description: "This is a swagger API documentation for the application [account-transactions](https://github.com/aswinudhayakumar/account-transactions). You can find all the available endpoints and its usages here."
+  version: "0.0.1"
+  title: "API-spec for account-transactions."
+basePath: "/app/v1"
+host: "localhost:8080"
 tags:
 - name: "accounts"
   description: "Accounts related APIs"
