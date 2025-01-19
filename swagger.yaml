@@ -1,0 +1,225 @@
+---
+swagger: "2.0"
+info:
+  description: "This is a swagger API documentation for the application account-transactions. 
+  You can find all the available endpoints and its usages here."
+  version: "1.0.5"
+  title: "API-spec for account-transactions"
+basePath: "/v2"
+tags:
+- name: "accounts"
+  description: "Accounts related APIs"
+- name: "transactions"
+  description: "Transactions related APIs"
+schemes:
+- "https"
+- "http"
+paths:
+  /accounts:
+    post:
+      tags:
+      - "accounts"
+      summary: "Create a new Account."
+      description: "This API provides a functionality to create a new Account."
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Request body for the Create Account APT."
+        required: true
+        schema:
+          $ref: "#/definitions/CreateAccount"
+      responses:
+        200:
+          description: "Account created successfully."
+          schema:
+            $ref: "#/definitions/GenericCreateSuccess"
+        400:
+          description: "Invalid request provided."
+          schema:
+            $ref: "#/definitions/BadRequestError"
+        500:
+          description: "Internal server error"
+          schema:
+            $ref: "#/definitions/UnexpectedError"
+
+  /accounts/{id}:
+    get:
+      tags:
+      - "accounts"
+      summary: "Get Account data using the Account ID."
+      description: "This API provides a functionality to get Account data using Account ID."
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "The Account ID for the Account that needs to be fetched."
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Account created successfully."
+          schema:
+            $ref: "#/definitions/GetAccountSuccess"
+        400:
+          description: "Invalid request provided."
+          schema:
+            $ref: "#/definitions/BadRequestError"
+        404:
+          description: "Requested data not found"
+          schema:
+            $ref: "#/definitions/DataNotFoundError"
+        500:
+          description: "Internal server error"
+          schema:
+            $ref: "#/definitions/UnexpectedError"
+
+  /transactions/:
+    post:
+      tags:
+      - "transactions"
+      summary: "Create a new transaction."
+      description: "This API provides a functionality to create a new Transaction."
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Request body for the Create Transaction APT."
+          required: true
+          schema:
+            $ref: "#/definitions/createTransaction"
+      responses:
+        200:
+          description: "Transaction created successfully."
+          schema:
+            $ref: "#/definitions/GenericCreateSuccess"
+        400:
+          description: "Invalid request provided."
+          schema:
+            $ref: "#/definitions/BadRequestError"
+        500:
+          description: "Internal server error"
+          schema:
+            $ref: "#/definitions/UnexpectedError"
+
+definitions:
+  # request schemas
+  CreateAccount:
+    type: "object"
+    properties:
+      document_number:
+        type: "string"
+        example: "1234567890"
+  createTransaction:
+    type: "object"
+    properties:
+      account_id:
+        type: "integer"
+        example: 1
+      operation_type_id:
+        type: "integer"
+        example: 1
+      amount:
+        type: "number"
+        format: "float"
+        example: 100.1234
+
+  # success response schemas
+  GenericCreateSuccess:
+    type: "object"
+    properties:
+      status:
+        type: "boolean"
+        example: true
+  GetAccountSuccess:
+    type: "object"
+    properties:
+      account_id:
+        type: "integer"
+        example: 1
+      document_number:
+        type: "string"
+        example: "123123"
+      created_at:
+        type: "string"
+        format: "date-time"
+        example: "2025-01-19T06:34:26Z"
+      updated_at:
+        type: "string"
+        format: "date-time"
+        example: "2025-01-19T06:34:26Z"
+
+  # error response schemas
+  BadRequestError:
+    type: "object"
+    properties:
+      errors:
+        type: "object"
+        properties:
+          id:
+            type: "string"
+            example: "01947d29-be0a-7dee-9152-dcd2fa85dca4"
+          code:
+            type: "string"
+            example: "invalid_request"
+          title:
+              type: "string"
+              example: "Validation Failed"
+          detail:
+              type: "string"
+              example: "field: invalid field provided"
+          status:
+              type: "integer"
+              format: "int"
+              example: 400
+  DataNotFoundError:
+    type: "object"
+    properties:
+      errors:
+        type: "object"
+        properties:
+          id:
+            type: "string"
+            example: "01947d29-be0a-7dee-9152-dcd2fa85dca4"
+          code:
+            type: "string"
+            example: "data_not_found"
+          title:
+            type: "string"
+            example: "Requested Data Not Found"
+          detail:
+            type: "string"
+            example: "sql: no rows in result set"
+          status:
+            type: "integer"
+            format: "int"
+            example: 404
+  UnexpectedError:
+    type: "object"
+    properties:
+      errors:
+        type: "object"
+        properties:
+          id:
+            type: "string"
+            example: "01947d29-be0a-7dee-9152-dcd2fa85dca4"
+          code:
+            type: "string"
+            example: "unexpected_error"
+          title:
+            type: "string"
+            example: "Unexpected Error"
+          detail:
+            type: "string"
+            example: "some unexpected error"
+          status:
+            type: "integer"
+            format: "int"
+            example: 500
