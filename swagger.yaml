@@ -150,8 +150,8 @@ components:
       type: "object"
       properties:
         status:
-          type: "boolean"
-          example: true
+          type: "string"
+          example: "success"
 
     GetAccountSuccess:
       type: "object"
